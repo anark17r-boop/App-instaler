@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Installer - Установка приложений на iPhone</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-mobile-alt"></i>
+                <h1>App Installer</h1>
+            </div>
+            <p class="subtitle">Прямая установка приложений на ваш iPhone</p>
+        </header>
+
+        <main class="main-content">
+            <div class="app-grid" id="appGrid">
+                <!-- Приложения будут загружены через JavaScript -->
+            </div>
+        </main>
+
+        <div class="instructions">
+            <h2>Как установить:</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <p>Нажмите на приложение</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <p>Нажмите "Установить"</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <p>Перейдите в Настройки → Основные → Управление устройством</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <p>Доверьте сертификату разработчика</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно установки -->
+    <div id="installModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <img id="modalAppIcon" src="" alt="App Icon">
+                <h2 id="modalAppName">Название приложения</h2>
+                <p id="modalAppVersion">Версия: 1.0</p>
+            </div>
+            <div class="modal-body">
+                <p id="modalAppDescription">Описание приложения</p>
+                <div class="install-button-container">
+                    <button id="installButton" class="install-btn">
+                        <i class="fas fa-download"></i>
+                        Установить приложение
+                    </button>
+                </div>
+                <div class="warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>После установки перейдите в Настройки → Основные → Управление устройством и доверьте сертификату разработчика</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
