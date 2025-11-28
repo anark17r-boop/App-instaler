@@ -4,10 +4,12 @@ const apps = [
         id: 'nulls_brawl',
         name: 'Nulls Brawl',
         version: 'v53.234',
-        description: 'Модифицированная версия Brawl Stars с неограниченными самоцветами и монетами',
+        description: 'Модифицированная версия Brawl Stars с неограниченными самоцветами, монетами и уникальными функциями. Получите преимущество в игре!',
         icon: '🎮',
-        filename: 'Nulls_brawl.ipa',
-        size: '145 MB'
+        size: '145 MB',
+        updated: 'Декабрь 2024',
+        // ПРЯМАЯ ССЫЛКА ИЗ GOOGLE DRIVE
+        directUrl: 'https://drive.google.com/uc?export=download&id=1xc0Y6cWLJIZI9RKb_LyACMZhjyg3Asfq'
     }
     // Добавьте другие приложения здесь по аналогии
 ];
@@ -29,7 +31,7 @@ function loadApps() {
             <div class="app-icon">${app.icon}</div>
             <h3 class="app-name">${app.name}</h3>
             <p class="app-version">${app.version} • ${app.size}</p>
-            <span class="install-badge">Установить</span>
+            <span class="install-badge">Бесплатная установка</span>
         `;
         
         appCard.addEventListener('click', () => openModal(app));
@@ -41,13 +43,20 @@ function loadApps() {
 function openModal(app) {
     document.getElementById('modalAppIcon').textContent = app.icon;
     document.getElementById('modalAppName').textContent = app.name;
-    document.getElementById('modalAppVersion').textContent = `Версия: ${app.version} • ${app.size}`;
+    document.getElementById('modalAppVersion').textContent = `Версия: ${app.version}`;
     document.getElementById('modalAppDescription').textContent = app.description;
     
     // Установка обработчика для кнопки установки
     installButton.onclick = () => installApp(app);
     
     modal.style.display = 'block';
+    
+    // Анимация появления
+    const modalContent = document.querySelector('.modal-content');
+    modalContent.style.animation = 'none';
+    setTimeout(() => {
+        modalContent.style.animation = 'modalSlideIn 0.3s ease';
+    }, 10);
 }
 
 // Закрытие модального окна
@@ -63,54 +72,83 @@ window.addEventListener('click', (event) => {
 
 // Функция установки приложения
 function installApp(app) {
-    // Создаем ссылку для установки
-    const installUrl = `itms-services://?action=download-manifest&url=${encodeURIComponent(window.location.origin + '/manifest.plist')}`;
-    
-    // Для тестирования используем прямую ссылку на IPA
-    // В реальном проекте вам понадобится сервер и правильно настроенный manifest.plist
-    const ipaUrl = `apps/${app.filename}`;
-    
-    // Создаем временную ссылку для скачивания
-    const link = document.createElement('a');
-    link.href = ipaUrl;
-    link.download = app.filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    // Показываем уведомление
-    showInstallNotification(app);
+    if (app.directUrl) {
+        // Показываем уведомление о начале установки
+        showInstallNotification(app, 'start');
+        
+        // Открываем прямую ссылку на скачивание
+        setTimeout(() => {
+            window.open(app.directUrl, '_blank');
+            
+            // Показываем уведомление об успехе через 2 секунды
+            setTimeout(() => {
+                showInstallNotification(app, 'success');
+            }, 2000);
+        }, 1000);
+    }
 }
 
 // Показать уведомление об установке
-function showInstallNotification(app) {
+function showInstallNotification(app, type) {
     const notification = document.createElement('div');
+    let message = '';
+    let bgColor = '';
+    
+    if (type === 'start') {
+        message = `🚀 Начинается установка ${app.name}...`;
+        bgColor = '#007bff';
+    } else if (type === 'success') {
+        message = `✅ ${app.name} успешно скачан! Проверьте загрузки.`;
+        bgColor = '#28a745';
+    }
+    
     notification.style.cssText = `
         position: fixed;
         top: 20px;
         right: 20px;
-        background: #28a745;
+        background: ${bgColor};
         color: white;
         padding: 15px 20px;
         border-radius: 10px;
         box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         z-index: 1001;
         animation: slideInRight 0.3s ease;
+        max-width: 300px;
+        font-weight: 500;
     `;
     
-    notification.innerHTML = `
-        <i class="fas fa-check-circle"></i>
-        <span>Начата установка ${app.name}</span>
-    `;
+    notification.innerHTML = message;
+    
+    // Удаляем предыдущие уведомления
+    const existingNotifications = document.querySelectorAll('[style*="position: fixed"]');
+    existingNotifications.forEach(notif => notif.remove());
     
     document.body.appendChild(notification);
     
+    // Автоматическое скрытие через 5 секунд
     setTimeout(() => {
-        notification.remove();
+        if (notification.parentNode) {
+            notification.style.animation = 'slideInRight 0.3s ease reverse';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 300);
+        }
     }, 5000);
+    
+    // Возможность закрыть по клику
+    notification.addEventListener('click', () => {
+        notification.style.animation = 'slideInRight 0.3s ease reverse';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.remove();
+            }
+        }, 300);
+    });
 }
 
-// Инициализация при загрузке страницы
+// Добавляем красивый ховер эффект для карточек
 document.addEventListener('DOMContentLoaded', () => {
     loadApps();
     
@@ -127,6 +165,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 opacity: 1;
             }
         }
+        
+        .app-card {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .app-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, transparent 0%, rgba(255,255,255,0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .app-card:hover::after {
+            opacity: 1;
+        }
     `;
     document.head.appendChild(style);
+});
+
+// Добавляем обработчик для клавиши ESC
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+        modal.style.display = 'none';
+    }
 });
