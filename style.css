@@ -9,6 +9,7 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     color: #333;
+    line-height: 1.6;
 }
 
 .container {
@@ -62,17 +63,34 @@ body {
 .app-card {
     background: #f8f9fa;
     border-radius: 15px;
-    padding: 20px;
+    padding: 25px;
     text-align: center;
     transition: all 0.3s ease;
     border: 2px solid transparent;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.app-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.5s;
+}
+
+.app-card:hover::before {
+    left: 100%;
 }
 
 .app-card:hover {
     transform: translateY(-5px);
     border-color: #007bff;
-    box-shadow: 0 10px 25px rgba(0,123,255,0.2);
+    box-shadow: 0 15px 30px rgba(0,123,255,0.2);
 }
 
 .app-icon {
@@ -80,12 +98,17 @@ body {
     height: 80px;
     border-radius: 20px;
     margin: 0 auto 15px;
-    background: linear-gradient(135deg, #007bff, #0056b3);
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     font-size: 2rem;
+    transition: transform 0.3s ease;
+}
+
+.app-card:hover .app-icon {
+    transform: scale(1.1);
 }
 
 .app-name {
@@ -98,16 +121,17 @@ body {
 .app-version {
     color: #666;
     font-size: 0.9rem;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .install-badge {
-    background: #28a745;
+    background: linear-gradient(135deg, #28a745, #20c997);
     color: white;
-    padding: 5px 12px;
+    padding: 8px 16px;
     border-radius: 20px;
     font-size: 0.8rem;
     font-weight: 600;
+    display: inline-block;
 }
 
 .instructions {
@@ -126,17 +150,24 @@ body {
 .steps {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+    gap: 25px;
 }
 
 .step {
     text-align: center;
     padding: 20px;
+    background: #f8f9fa;
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+}
+
+.step:hover {
+    transform: translateY(-3px);
 }
 
 .step-number {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     background: linear-gradient(135deg, #007bff, #0056b3);
     color: white;
     border-radius: 50%;
@@ -145,6 +176,7 @@ body {
     justify-content: center;
     margin: 0 auto 15px;
     font-weight: 600;
+    font-size: 1.2rem;
 }
 
 /* Модальное окно */
@@ -157,6 +189,7 @@ body {
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
 }
 
 .modal-content {
@@ -168,6 +201,7 @@ body {
     max-width: 500px;
     position: relative;
     animation: modalSlideIn 0.3s ease;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
 }
 
 @keyframes modalSlideIn {
@@ -190,6 +224,7 @@ body {
     cursor: pointer;
     color: #999;
     z-index: 1;
+    transition: color 0.3s ease;
 }
 
 .close:hover {
@@ -197,60 +232,107 @@ body {
 }
 
 .modal-header {
-    background: linear-gradient(135deg, #007bff, #0056b3);
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
     color: white;
-    padding: 30px;
+    padding: 40px 30px 30px;
     text-align: center;
     border-radius: 20px 20px 0 0;
+    position: relative;
 }
 
-.modal-header img {
-    width: 80px;
-    height: 80px;
-    border-radius: 20px;
-    margin-bottom: 15px;
+.app-icon-large {
+    width: 100px;
+    height: 100px;
+    border-radius: 25px;
+    margin: 0 auto 20px;
+    background: rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    backdrop-filter: blur(10px);
+}
+
+.modal-header h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
 }
 
 .modal-body {
     padding: 30px;
 }
 
+.app-info {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    color: #666;
+}
+
+.info-item:last-child {
+    margin-bottom: 0;
+}
+
+.info-item i {
+    color: #007bff;
+    width: 20px;
+}
+
 .install-button-container {
     text-align: center;
-    margin: 25px 0;
+    margin: 30px 0;
 }
 
 .install-btn {
     background: linear-gradient(135deg, #28a745, #20c997);
     color: white;
     border: none;
-    padding: 15px 30px;
-    font-size: 1.1rem;
-    border-radius: 25px;
+    padding: 18px 40px;
+    font-size: 1.2rem;
+    border-radius: 30px;
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 600;
+    box-shadow: 0 10px 25px rgba(40,167,69,0.3);
 }
 
 .install-btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 10px 25px rgba(40,167,69,0.3);
+    box-shadow: 0 15px 35px rgba(40,167,69,0.4);
+}
+
+.install-btn:active {
+    transform: scale(0.95);
 }
 
 .warning {
     background: #fff3cd;
     border: 1px solid #ffeaa7;
-    border-radius: 10px;
-    padding: 15px;
+    border-radius: 15px;
+    padding: 20px;
     display: flex;
     align-items: flex-start;
-    gap: 10px;
+    gap: 15px;
     color: #856404;
 }
 
 .warning i {
     color: #f39c12;
+    font-size: 1.2rem;
     margin-top: 2px;
+}
+
+.warning strong {
+    display: block;
+    margin-bottom: 5px;
 }
 
 /* Адаптивность */
@@ -260,7 +342,7 @@ body {
     }
     
     .app-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-template-columns: 1fr;
     }
     
     .steps {
@@ -271,4 +353,39 @@ body {
         margin: 10% auto;
         width: 95%;
     }
+    
+    .install-btn {
+        padding: 15px 30px;
+        font-size: 1.1rem;
+    }
+}
+
+/* Анимации */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Прогресс бар */
+.progress-bar {
+    width: 100%;
+    height: 4px;
+    background: #e9ecef;
+    border-radius: 2px;
+    margin: 10px 0;
+    overflow: hidden;
+    display: none;
+}
+
+.progress {
+    height: 100%;
+    background: linear-gradient(135deg, #28a745, #20c997);
+    border-radius: 2px;
+    transition: width 0.3s ease;
 }
