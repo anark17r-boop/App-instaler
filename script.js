@@ -8,10 +8,10 @@ const apps = [
         icon: '🎮',
         size: '145 MB',
         updated: 'Декабрь 2024',
-        // ПРЯМАЯ ССЫЛКА ИЗ GOOGLE DRIVE
-        directUrl: 'https://drive.google.com/uc?export=download&id=1xc0Y6cWLJIZI9RKb_LyACMZhjyg3Asfq'
+        // Для прямой установки нужен manifest.plist
+        bundleId: 'com.nulls.brawl',
+        directUrl: 'itms-services://?action=download-manifest&url=https://your-site.netlify.app/manifests/nullsbrawl.plist'
     }
-    // Добавьте другие приложения здесь по аналогии
 ];
 
 // DOM элементы
@@ -31,7 +31,7 @@ function loadApps() {
             <div class="app-icon">${app.icon}</div>
             <h3 class="app-name">${app.name}</h3>
             <p class="app-version">${app.version} • ${app.size}</p>
-            <span class="install-badge">Бесплатная установка</span>
+            <span class="install-badge">Прямая установка</span>
         `;
         
         appCard.addEventListener('click', () => openModal(app));
@@ -76,15 +76,28 @@ function installApp(app) {
         // Показываем уведомление о начале установки
         showInstallNotification(app, 'start');
         
-        // Открываем прямую ссылку на скачивание
+        // Прямая установка через itms-services
         setTimeout(() => {
-            window.open(app.directUrl, '_blank');
+            // Создаем скрытую ссылку для установки
+            const installLink = document.createElement('a');
+            installLink.href = app.directUrl;
+            installLink.style.display = 'none';
+            document.body.appendChild(installLink);
             
-            // Показываем уведомление об успехе через 2 секунды
+            // Пытаемся открыть через location.href (основной способ)
+            window.location.href = app.directUrl;
+            
+            // Резервный способ через click
             setTimeout(() => {
-                showInstallNotification(app, 'success');
-            }, 2000);
-        }, 1000);
+                installLink.click();
+            }, 100);
+            
+            // Убираем ссылку
+            setTimeout(() => {
+                document.body.removeChild(installLink);
+            }, 1000);
+            
+        }, 500);
     }
 }
 
@@ -95,10 +108,10 @@ function showInstallNotification(app, type) {
     let bgColor = '';
     
     if (type === 'start') {
-        message = `🚀 Начинается установка ${app.name}...`;
+        message = `🚀 Запускается установка ${app.name}...`;
         bgColor = '#007bff';
     } else if (type === 'success') {
-        message = `✅ ${app.name} успешно скачан! Проверьте загрузки.`;
+        message = `✅ ${app.name} успешно устанавливается!`;
         bgColor = '#28a745';
     }
     
@@ -148,51 +161,7 @@ function showInstallNotification(app, type) {
     });
 }
 
-// Добавляем красивый ховер эффект для карточек
+// Инициализация
 document.addEventListener('DOMContentLoaded', () => {
     loadApps();
-    
-    // Добавляем стили для анимации уведомления
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        
-        .app-card {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .app-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at center, transparent 0%, rgba(255,255,255,0.1) 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .app-card:hover::after {
-            opacity: 1;
-        }
-    `;
-    document.head.appendChild(style);
-});
-
-// Добавляем обработчик для клавиши ESC
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-        modal.style.display = 'none';
-    }
 });
