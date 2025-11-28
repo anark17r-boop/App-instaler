@@ -19,12 +19,12 @@
 
         <main class="main-content">
             <div class="app-grid" id="appGrid">
-                <!-- Приложения будут загружены через JavaScript -->
+                <!-- Приложения загружаются через JavaScript -->
             </div>
         </main>
 
         <div class="instructions">
-            <h2>Как установить:</h2>
+            <h2>📱 Как установить приложение:</h2>
             <div class="steps">
                 <div class="step">
                     <div class="step-number">1</div>
@@ -36,11 +36,11 @@
                 </div>
                 <div class="step">
                     <div class="step-number">3</div>
-                    <p>Перейдите в Настройки → Основные → Управление устройством</p>
+                    <p>Дождитесь загрузки</p>
                 </div>
                 <div class="step">
                     <div class="step-number">4</div>
-                    <p>Доверьте сертификату разработчика</p>
+                    <p>Перейдите в Настройки → Основные → Управление устройством → Доверьте сертификату</p>
                 </div>
             </div>
         </div>
@@ -51,12 +51,22 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <div class="modal-header">
-                <img id="modalAppIcon" src="" alt="App Icon">
-                <h2 id="modalAppName">Название приложения</h2>
-                <p id="modalAppVersion">Версия: 1.0</p>
+                <div class="app-icon-large" id="modalAppIcon">🎮</div>
+                <h2 id="modalAppName">Nulls Brawl</h2>
+                <p id="modalAppVersion">Версия: v53.234</p>
             </div>
             <div class="modal-body">
-                <p id="modalAppDescription">Описание приложения</p>
+                <p id="modalAppDescription">Модифицированная версия Brawl Stars с улучшенными функциями</p>
+                <div class="app-info">
+                    <div class="info-item">
+                        <i class="fas fa-download"></i>
+                        <span>Размер: 145 MB</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-calendar"></i>
+                        <span>Обновлено: Декабрь 2024</span>
+                    </div>
+                </div>
                 <div class="install-button-container">
                     <button id="installButton" class="install-btn">
                         <i class="fas fa-download"></i>
@@ -65,7 +75,10 @@
                 </div>
                 <div class="warning">
                     <i class="fas fa-exclamation-triangle"></i>
-                    <p>После установки перейдите в Настройки → Основные → Управление устройством и доверьте сертификату разработчика</p>
+                    <div>
+                        <strong>Важно!</strong>
+                        <p>После установки перейдите в <strong>Настройки → Основные → Управление устройством</strong> и доверьте сертификату разработчика для запуска приложения.</p>
+                    </div>
                 </div>
             </div>
         </div>
